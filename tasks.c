@@ -21,17 +21,23 @@
 #define RHO 4
 
 typedef struct {
-  double x, y, u, v, rho;
-} data_t;
+  double x, y, u, v, rho, flux;
+} row_t;
 
 void *safe_malloc(size_t bytes);
 
 void max_min_flux(const char* flow_file)
 {
-    double x= 0.0, y = 0.0, u = 0.0, v = 0.0 , rho = 0.0;
-    int num_total = 0;
-    int num_lines = 0;
-    int n, m;
+
+    int counter = 0;
+
+    double x, y , u , v, rho;
+    row_t row_where_u_rho_is_max, row_where_u_rho_is_min, row_where_v_rho_is_max, row_where_v_rho_is_min;
+    //
+    // row_t* row_where_u_rho_is_max = (row_t*)safe_malloc(sizeof(row_t));
+    // row_t* row_where_u_rho_is_min = (row_t*)safe_malloc(sizeof(row_t));
+    // row_t* row_where_v_rho_is_max = (row_t*)safe_malloc(sizeof(row_t));
+    // row_t* row_where_v_rho_is_min = (row_t*)safe_malloc(sizeof(row_t));
 
     FILE *fp_in = fopen(flow_file, "r"); //open file and read only
     FILE *fp_out = fopen(OUTPUT_FILE, "w"); // open file and write only
@@ -46,12 +52,33 @@ void max_min_flux(const char* flow_file)
 
     /* while x, y , u, v, rho exists, and if x is larger than 20, then print to
     new file */
-
     while(fscanf(fp_in,"%lf,%lf,%lf,%lf,%lf\n", &x, &y, &u, &v, &rho) == 5){
-        if (x > 20.0) {
-          num_lines++;
-          fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", x, y, u , v, rho);
+        if (x <= 20.0) {
+          continue;
         }
+
+        if (counter == 0) {
+
+          row_where_v_rho_is_min = row_where_v_rho_is_max = row_where_u_rho_is_min
+              = row_where_u_rho_is_max = (row_t){x, y, u, v, rho, u*rho};
+
+        }
+
+
+        
+        // row_where_u_rho_is_max.calculated = u * rho;
+        // row_where_u_rho_is_min.calculated = u * rho;
+        // row_where_v_rho_is_max.calculated = v * rho;
+        // row_where_v_rho_is_min.calculated = v * rho;
+
+
+
+        counter++;
+        // fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", row_where_u_rho_is_max.x, row_where_u_rho_is_max.y,
+        //  row_where_u_rho_is_max.u , row_where_u_rho_is_max.v, row_where_u_rho_is_max.rho, row_where_u_rho_is_max.flux);
+
+
+
 
 
 
@@ -61,7 +88,7 @@ void max_min_flux(const char* flow_file)
       //close files
       fclose(fp_in);
       fclose(fp_out);
-      printf("total number of lines is %d\n", num_total);
+      //printf("total number of lines is %d\n", num_total);
 
     printf("max_min_flux() - IMPLEMENT ME!\n");
 }

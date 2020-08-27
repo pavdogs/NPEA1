@@ -12,6 +12,8 @@
 #include <string.h>
 #include "tasks.h"
 
+#define OUTPUT_FILE "task1.csv"
+
 typedef struct {
   double x, y, u, v, rho;
 } data_t;
@@ -23,8 +25,8 @@ void max_min_flux(const char* flow_file)
     int num_total = 0;
     int num_lines = 0;
 
-    FILE *fp_in = fopen("flow_file.csv", "r"); //open file and read only
-    FILE *fp_out = fopen("task1_sample.csv", "w"); // open file and write only
+    FILE *fp_in = fopen(flow_file, "r"); //open file and read only
+    FILE *fp_out = fopen(OUTPUT_FILE, "w"); // open file and write only
 
     //exit if file doesn't exist
     if(fp_in == NULL) {
@@ -46,7 +48,7 @@ void max_min_flux(const char* flow_file)
       //close files
       fclose(fp_in);
       fclose(fp_out);
-      printf("total number of lines is %d", num_total);
+      printf("total number of lines is %d\n", num_total);
 
     printf("max_min_flux() - IMPLEMENT ME!\n");
 }

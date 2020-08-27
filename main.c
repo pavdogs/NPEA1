@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
 	int vorticity_numthreshold = 0;
 
 	flow_file = argv[1];
+
 	grid_resolution = atoi(argv[2]);
     vorticity_numthreshold = atoi(argv[3]);
 

@@ -56,34 +56,67 @@ void max_min_flux(const char* flow_file)
         if (x <= 20.0) {
           continue;
         }
-
+        //set first row read as min/max
         if (counter == 0) {
 
-          row_where_v_rho_is_min = row_where_v_rho_is_max = row_where_u_rho_is_min
-              = row_where_u_rho_is_max = (row_t){x, y, u, v, rho, u*rho};
-
+          row_where_u_rho_is_min = row_where_u_rho_is_max =
+            (row_t){x, y, u, v, rho, u*rho};
+          row_where_v_rho_is_min = row_where_v_rho_is_max =
+            (row_t){x, y, u, v, rho, v*rho};
         }
 
+        // now find max and min
+        if (row_where_u_rho_is_max.flux < u*rho) {
+          row_where_u_rho_is_max.flux = u*rho;
+          row_where_u_rho_is_max.x = x;
+          row_where_u_rho_is_max.y = y;
+          row_where_u_rho_is_max.u = u;
+          row_where_u_rho_is_max.v = v;
+          row_where_u_rho_is_max.rho = rho;
+        }
 
-        
-        // row_where_u_rho_is_max.calculated = u * rho;
-        // row_where_u_rho_is_min.calculated = u * rho;
-        // row_where_v_rho_is_max.calculated = v * rho;
-        // row_where_v_rho_is_min.calculated = v * rho;
+        if (row_where_u_rho_is_min.flux > u*rho) {
+          row_where_u_rho_is_min.flux = u*rho;
+          row_where_u_rho_is_min.x = x;
+          row_where_u_rho_is_min.y = y;
+          row_where_u_rho_is_min.u = u;
+          row_where_u_rho_is_min.v = v;
+          row_where_u_rho_is_min.rho = rho;
+        }
 
+        if (row_where_v_rho_is_max.flux < v*rho) {
+          row_where_v_rho_is_max.flux = v*rho;
+          row_where_v_rho_is_max.x = x;
+          row_where_v_rho_is_max.y = y;
+          row_where_v_rho_is_max.u = u;
+          row_where_v_rho_is_max.v = v;
+          row_where_v_rho_is_max.rho = rho;
+        }
 
+        if (row_where_v_rho_is_min.flux > v*rho) {
+          row_where_v_rho_is_min.flux = v*rho;
+          row_where_v_rho_is_min.x = x;
+          row_where_v_rho_is_min.y = y;
+          row_where_v_rho_is_min.u = u;
+          row_where_v_rho_is_min.v = v;
+          row_where_v_rho_is_min.rho = rho;
+        }
 
         counter++;
-        // fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", row_where_u_rho_is_max.x, row_where_u_rho_is_max.y,
-        //  row_where_u_rho_is_max.u , row_where_u_rho_is_max.v, row_where_u_rho_is_max.rho, row_where_u_rho_is_max.flux);
-
-
-
-
-
-
-
       }
+        fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", row_where_u_rho_is_max.x, row_where_u_rho_is_max.y,
+          row_where_u_rho_is_max.u , row_where_u_rho_is_max.v, row_where_u_rho_is_max.rho, row_where_u_rho_is_max.flux);
+
+        fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", row_where_u_rho_is_min.x, row_where_u_rho_is_min.y,
+          row_where_u_rho_is_min.u , row_where_u_rho_is_min.v, row_where_u_rho_is_min.rho, row_where_u_rho_is_min.flux);
+
+        fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", row_where_v_rho_is_max.x, row_where_v_rho_is_max.y,
+          row_where_v_rho_is_max.u , row_where_v_rho_is_max.v, row_where_v_rho_is_max.rho, row_where_v_rho_is_max.flux);
+
+        fprintf(fp_out, "%.6lf,%.6lf,%.6lf,%.6lf,%.6lf,%.6lf\n", row_where_v_rho_is_min.x, row_where_v_rho_is_min.y,
+          row_where_v_rho_is_min.u , row_where_v_rho_is_min.v, row_where_v_rho_is_min.rho, row_where_v_rho_is_min.flux);
+
+
 
       //close files
       fclose(fp_in);

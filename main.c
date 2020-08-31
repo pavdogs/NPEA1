@@ -11,11 +11,13 @@
 #include <math.h>
 #include <sys/time.h>
 #include <string.h>
+#include <assert.h>
 #include "tasks.h"
 
 int main(int argc, char *argv[]) {
 		//FILE * fp;
 	/* TODO: Parse Command Line Arguments */
+
 	char* flow_file = NULL;
 	int grid_resolution = 0;
 	int vorticity_numthreshold = 0;
